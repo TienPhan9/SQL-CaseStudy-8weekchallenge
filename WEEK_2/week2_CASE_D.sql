@@ -69,8 +69,10 @@ where cancellation is null
 /*If a Meat Lovers pizza was $12 and Vegetarian $10 fixed prices with no cost for extras 
 and each runner is paid $0.30 per kilometre traveled - how much money does Pizza Runner have left over 
 after these deliveries?*/
-select count(pizza_id)
+select *, (cast(substring(distance, 1, iif(patindex('%[a-z]%', distance)=0, len(distance), patindex('%[a-z]%', distance)-1)) as float) * 0.3)
++ iif(pizza_id = 1, 12, 10)
 from customer_orders c inner join runner_orders r on c.order_id = r.order_id
 						inner join ratings_runner ra on c.customer_id = ra.customer_id
 where cancellation is null
+
 
